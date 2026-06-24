@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "domain": "HR",
+    "question": "Tell me about yourself.",
+    "ideal_answer": "A strong answer includes education background, technical skills, relevant experience, projects, achievements, and career goals.",
+    "key_points": ["education", "skills", "experience", "projects", "goals"]
+  },
+  {
+    "id": 2,
+    "domain": "HR",
+    "question": "Why do you want to become a software engineer?",
+    "ideal_answer": "A strong answer shows passion for technology, problem-solving, continuous learning, and building impactful products.",
+    "key_points": ["passion", "problem-solving", "learning", "impact"]
+  },
+  {
+    "id": 3,
+    "domain": "Projects",
+    "question": "Tell me about a project you are most proud of.",
+    "ideal_answer": "A strong answer explains the project goal, technologies used, personal contribution, challenges faced, solutions, and lessons learned.",
+    "key_points": ["goal", "tech stack", "contribution", "challenges", "lessons"]
+  },
+  {
+    "id": 4,
+    "domain": "Programming",
+    "question": "Which programming language are you most comfortable with, and why?",
+    "ideal_answer": "A strong answer mentions the preferred language, reasons for liking it, projects built, and key language features used.",
+    "key_points": ["language", "reasons", "projects", "features"]
+  },
+  {
+    "id": 5,
+    "domain": "Technical",
+    "question": "What are the four pillars of Object-Oriented Programming?",
+    "ideal_answer": "The four pillars are Encapsulation, Inheritance, Polymorphism, and Abstraction with practical examples.",
+    "key_points": ["encapsulation", "inheritance", "polymorphism", "abstraction"]
+  },
+  {
+    "id": 6,
+    "domain": "Technical",
+    "question": "What is the difference between a process and a thread?",
+    "ideal_answer": "Processes have independent memory spaces while threads share memory within a process. Threads are lighter and faster for communication.",
+    "key_points": ["memory", "communication", "performance", "resources"]
+  },
+  {
+    "id": 7,
+    "domain": "Technical",
+    "question": "What is the difference between SQL and NoSQL databases?",
+    "ideal_answer": "SQL databases are relational with strict schemas; NoSQL databases are non-relational with flexible schemas and better horizontal scaling.",
+    "key_points": ["relational", "schemas", "scaling", "use cases"]
+  },
+  {
+    "id": 8,
+    "domain": "Technical",
+    "question": "When would you choose an array instead of a linked list?",
+    "ideal_answer": "Arrays are better for random access and when size is known; linked lists are better for frequent insertions/deletions.",
+    "key_points": ["random access", "memory", "insertions", "deletions"]
+  }
+]
