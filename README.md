@@ -101,4 +101,4 @@ npm install
 npm run dev
 ```
 
-Set `GEMINI_API_KEY` in `.env`. The frontend uses browser-native speech recognition and text-to-speech, so Chrome or Edge is recommended.
+Set `GEMINI_API_KEY` in `.env`. The frontend uses browser-native speech recognition and text-to-speech.
