@@ -1,7 +1,5 @@
 # AI Voice Interview Coach
 
-Production-ready hackathon project for adaptive voice-based HR and SDE mock interviews.
-
 ## System Architecture
 
 ```mermaid
@@ -80,8 +78,6 @@ voice-interview-agent/
       main.jsx
     package.json
     vite.config.js
-  render.yaml
-  vercel.json
 ```
 
 ## Local Development
