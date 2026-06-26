@@ -19,7 +19,7 @@ flowchart LR
 
 ## Database Design
 
-The project uses `dataset/interview_knowledge_base.json` as a lightweight JSON database.
+The project uses `dataset/interview_knowledge_base.json` as JSON database.
 
 ```json
 {
