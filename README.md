@@ -16,8 +16,8 @@ When a user selects an interview type and clicks Start Interview:
 8. Answer is automatically submitted.
 9. Evaluation happens immediately.
 10. AI decides whether: Answer is good → next question
-                        Answer is incomplete → follow-up question
-                        User still struggles → coaching hint Repeat until interview completion.
+Answer is incomplete → follow-up question
+User still struggles → coaching hint Repeat until interview completion.
 
     
 ## Database Design
