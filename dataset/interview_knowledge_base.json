@@ -1,0 +1,162 @@
+{
+  "version": "1.0.0",
+  "interview_types": {
+    "hr": {
+      "label": "HR Interview",
+      "description": "Behavioral interview focused on workplace judgment, communication, motivation, and self-awareness.",
+      "opening": "Hi, welcome to your HR mock interview. I will ask adaptive behavioral questions and help you reflect without giving away scripted answers.",
+      "topics": [
+        {
+          "id": "leadership",
+          "name": "Leadership",
+          "competencies": ["ownership", "influence", "decision making", "accountability", "impact"],
+          "seed_question_intents": [
+            "Ask about a time the candidate led without authority.",
+            "Ask about taking ownership of a difficult outcome.",
+            "Ask about making a decision with incomplete information."
+          ],
+          "evaluation_rubric": "Strong answers use a concrete situation, explain actions taken by the candidate, show trade-offs, and quantify or clearly describe impact."
+        },
+        {
+          "id": "teamwork",
+          "name": "Teamwork",
+          "competencies": ["collaboration", "empathy", "role clarity", "reliability", "shared outcomes"],
+          "seed_question_intents": [
+            "Ask about working with a teammate who had a different style.",
+            "Ask about helping a team meet an urgent goal.",
+            "Ask about receiving or giving feedback in a team."
+          ],
+          "evaluation_rubric": "Strong answers show collaboration, respect for others, practical communication, and a clear contribution to a shared result."
+        },
+        {
+          "id": "conflict_resolution",
+          "name": "Conflict Resolution",
+          "competencies": ["listening", "problem framing", "de-escalation", "negotiation", "professionalism"],
+          "seed_question_intents": [
+            "Ask about resolving a disagreement with a peer.",
+            "Ask about handling criticism from a manager or stakeholder.",
+            "Ask about balancing competing priorities across people."
+          ],
+          "evaluation_rubric": "Strong answers avoid blame, clarify both sides, explain the candidate's actions, and show a constructive resolution or learning."
+        },
+        {
+          "id": "communication",
+          "name": "Communication",
+          "competencies": ["clarity", "audience awareness", "listening", "structure", "conciseness"],
+          "seed_question_intents": [
+            "Ask about explaining a complex topic to a non-technical audience.",
+            "Ask about communicating bad news or project risk.",
+            "Ask about adapting communication for different stakeholders."
+          ],
+          "evaluation_rubric": "Strong answers are structured, audience-aware, concise, and show how the candidate checked for understanding."
+        },
+        {
+          "id": "strengths_weaknesses",
+          "name": "Strengths and Weaknesses",
+          "competencies": ["self-awareness", "growth mindset", "specific examples", "honesty", "improvement plan"],
+          "seed_question_intents": [
+            "Ask about the candidate's greatest professional strength.",
+            "Ask about a weakness the candidate is actively improving.",
+            "Ask about feedback the candidate has received and acted on."
+          ],
+          "evaluation_rubric": "Strong answers are specific, credible, and show practical evidence rather than generic personality claims."
+        },
+        {
+          "id": "career_goals",
+          "name": "Career Goals",
+          "competencies": ["motivation", "role alignment", "learning plan", "long-term thinking", "realism"],
+          "seed_question_intents": [
+            "Ask about why the candidate wants this role.",
+            "Ask about where the candidate wants to grow over the next few years.",
+            "Ask about the kind of work environment where the candidate thrives."
+          ],
+          "evaluation_rubric": "Strong answers connect the candidate's goals to the role, show curiosity, and avoid sounding unfocused or purely transactional."
+        }
+      ]
+    },
+    "technical_sde": {
+      "label": "Technical Interview (SDE)",
+      "description": "Software engineering interview across CS fundamentals, coding reasoning, and system design thinking.",
+      "opening": "Hi, welcome to your technical SDE mock interview. I will ask adaptive engineering questions, probe your reasoning, and offer hints when you get stuck.",
+      "topics": [
+        {
+          "id": "oop",
+          "name": "Object-Oriented Programming",
+          "competencies": ["encapsulation", "abstraction", "inheritance", "polymorphism", "composition", "design trade-offs"],
+          "seed_question_intents": [
+            "Ask the candidate to explain OOP through design principles rather than definitions.",
+            "Ask about when inheritance is harmful and composition is preferable.",
+            "Ask about modeling a simple real-world domain with classes and interfaces."
+          ],
+          "evaluation_rubric": "Strong answers explain principles, include practical examples, and discuss design trade-offs instead of only naming terms."
+        },
+        {
+          "id": "dbms",
+          "name": "DBMS",
+          "competencies": ["indexes", "transactions", "normalization", "joins", "isolation levels", "query performance"],
+          "seed_question_intents": [
+            "Ask about how indexes improve reads and affect writes.",
+            "Ask about transactions and ACID properties in a real scenario.",
+            "Ask about choosing normalization or denormalization."
+          ],
+          "evaluation_rubric": "Strong answers explain correctness, performance, and trade-offs with concrete database examples."
+        },
+        {
+          "id": "operating_systems",
+          "name": "Operating Systems",
+          "competencies": ["processes", "threads", "memory management", "scheduling", "deadlocks", "synchronization"],
+          "seed_question_intents": [
+            "Ask about process versus thread behavior.",
+            "Ask about deadlocks and prevention strategies.",
+            "Ask about concurrency issues and synchronization primitives."
+          ],
+          "evaluation_rubric": "Strong answers connect OS concepts to resource management, memory, concurrency, and practical system behavior."
+        },
+        {
+          "id": "networking",
+          "name": "Networking",
+          "competencies": ["HTTP", "TCP", "DNS", "latency", "retries", "load balancing", "TLS"],
+          "seed_question_intents": [
+            "Ask what happens when a user enters a URL in a browser.",
+            "Ask about TCP versus UDP trade-offs.",
+            "Ask about handling unreliable networks in applications."
+          ],
+          "evaluation_rubric": "Strong answers trace request flow, identify protocols, and discuss reliability, latency, and security considerations."
+        },
+        {
+          "id": "java",
+          "name": "Java",
+          "competencies": ["collections", "JVM", "exceptions", "generics", "concurrency", "memory model"],
+          "seed_question_intents": [
+            "Ask about HashMap behavior and collision handling.",
+            "Ask about checked versus unchecked exceptions.",
+            "Ask about Java concurrency primitives and thread safety."
+          ],
+          "evaluation_rubric": "Strong answers combine language mechanics with practical coding consequences and common pitfalls."
+        },
+        {
+          "id": "dsa",
+          "name": "Data Structures and Algorithms",
+          "competencies": ["time complexity", "space complexity", "arrays", "hashing", "trees", "graphs", "dynamic programming"],
+          "seed_question_intents": [
+            "Ask the candidate to choose a data structure for a realistic problem.",
+            "Ask about complexity trade-offs between two approaches.",
+            "Ask about recognizing when hashing, trees, or graphs fit a problem."
+          ],
+          "evaluation_rubric": "Strong answers reason about constraints, complexity, edge cases, and why a data structure or algorithm fits."
+        },
+        {
+          "id": "system_design",
+          "name": "System Design",
+          "competencies": ["requirements", "APIs", "data modeling", "scalability", "caching", "queues", "observability"],
+          "seed_question_intents": [
+            "Ask about designing a URL shortener, notification service, or feed service at a high level.",
+            "Ask about scaling reads and writes for a simple service.",
+            "Ask about trade-offs between consistency, availability, and latency."
+          ],
+          "evaluation_rubric": "Strong answers clarify requirements, identify core components, explain data flow, and discuss bottlenecks and trade-offs."
+        }
+      ]
+    }
+  }
+}

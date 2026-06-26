@@ -6,3 +6,5 @@ chroma_db/
 recordings/
 .vscode/
 .idea/
+frontend/node_modules/
+frontend/dist/

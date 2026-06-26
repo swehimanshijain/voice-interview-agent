@@ -1,170 +1,92 @@
-from fastapi import FastAPI
-from fastapi import UploadFile, File
-from fastapi.responses import FileResponse
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.retriever import build_database, get_reference
-from backend.interviewer import evaluate_answer
-from backend.session import InterviewSession
-from backend.feedback import generate_feedback
-from backend.stt import transcribe_audio
-from backend.tts import generate_speech
+from backend.app.config import get_settings
+from backend.app.knowledge_base import KnowledgeBase
+from backend.app.schemas import (
+    AnswerRequest,
+    AnswerResponse,
+    CompleteResponse,
+    InterviewTypeInfo,
+    SessionCreateRequest,
+    SessionResponse,
+)
+from backend.app.services.gemini_service import AIResponseError, GeminiService
+from backend.app.services.session_manager import InterviewSessionManager, SessionNotFoundError
+
+settings = get_settings()
+knowledge_base = KnowledgeBase(settings.knowledge_base_path)
+gemini = GeminiService(settings.gemini_api_key, settings.gemini_model)
+session_manager = InterviewSessionManager(
+    kb=knowledge_base,
+    ai=gemini,
+    max_questions=settings.max_questions,
+)
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    yield
+
 
 app = FastAPI(
-    title="Voice Interview Agent"
+    title=settings.app_name,
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.cors_origins + ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-session = InterviewSession()
+
+@app.get("/api/health")
+def health() -> dict[str, str]:
+    return {"status": "ok", "service": settings.app_name}
 
 
-@app.on_event("startup")
-def startup():
-
-    build_database()
-
-
-@app.get("/")
-def home():
-
-    return {
-        "message": "Voice Interview Agent Backend Running"
-    }
+@app.get("/api/interview-types", response_model=list[InterviewTypeInfo])
+def get_interview_types() -> list[InterviewTypeInfo]:
+    return knowledge_base.interview_types()
 
 
-@app.get("/start")
-def start_interview():
-
-    session.reset()
-
-    current_question = session.get_current_question()
-
-    return {
-        "status": "started",
-        "question_number": 1,
-        "total_questions": len(session.questions),
-        "question": current_question["question"],
-        "domain": current_question["domain"]
-    }
+@app.post("/api/sessions", response_model=SessionResponse)
+def create_session(payload: SessionCreateRequest) -> SessionResponse:
+    try:
+        return session_manager.create(payload.interview_type)
+    except AIResponseError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
-@app.post("/answer")
-def answer(candidate_answer: str):
-
-    current_question = session.get_current_question()
-
-    if current_question is None:
-
-        return {
-            "status": "completed",
-            "feedback": generate_feedback(
-                session.history
-            )
-        }
-
-    reference = get_reference(
-        current_question["question"]
-    )
-
-    evaluation = evaluate_answer(
-        question=reference["question"],
-        ideal_answer=reference["ideal_answer"],
-        key_points=reference["key_points"],
-        conversation_history=session.current_conversation,
-        latest_answer=candidate_answer,
-        follow_up_count=session.follow_up_count
-    )
-
-    session.add_conversation(
-        candidate_answer=candidate_answer,
-        interviewer_response=evaluation.get(
-            "follow_up",
-            ""
-        )
-    )
-
-    if (
-        not evaluation.get("move_next", False)
-        and session.follow_up_count < 2
-        and evaluation.get("follow_up", "")
-    ):
-
-        return {
-            "status": "follow_up",
-            "feedback": evaluation["feedback"],
-            "question": evaluation["follow_up"],
-            "scores": {
-                "technical": evaluation["technical_score"],
-                "communication": evaluation["communication_score"],
-                "confidence": evaluation["confidence_score"],
-                "overall": evaluation["overall_score"]
-            }
-        }
-
-    session.complete_question(
-        evaluation
-    )
-
-    session.next_question()
-
-    if session.is_finished():
-
-        final_feedback = generate_feedback(
-            session.get_history()
-        )
-
-        return {
-            "status": "completed",
-            "feedback": final_feedback
-        }
-
-    next_question = session.get_current_question()
-
-    return {
-        "status": "next_question",
-        "question_number": session.current_index + 1,
-        "total_questions": len(session.questions),
-        "domain": next_question["domain"],
-        "question": next_question["question"],
-        "feedback": evaluation["feedback"],
-        "scores": {
-            "technical": evaluation["technical_score"],
-            "communication": evaluation["communication_score"],
-            "confidence": evaluation["confidence_score"],
-            "overall": evaluation["overall_score"]
-        }
-    }
+@app.get("/api/sessions/{session_id}", response_model=SessionResponse)
+def get_session(session_id: str) -> SessionResponse:
+    try:
+        return session_manager.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Interview session not found.") from exc
 
 
-@app.post("/transcribe")
-async def transcribe(file: UploadFile = File(...)):
-
-    audio_path = f"recordings/{file.filename}"
-
-    with open(audio_path, "wb") as buffer:
-        buffer.write(await file.read())
-
-    transcript = transcribe_audio(audio_path)
-
-    return {
-        "transcript": transcript
-    }
+@app.post("/api/sessions/{session_id}/answers", response_model=AnswerResponse)
+def submit_answer(session_id: str, payload: AnswerRequest) -> AnswerResponse:
+    try:
+        return session_manager.answer(session_id=session_id, transcript=payload.transcript)
+    except SessionNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Interview session not found.") from exc
+    except AIResponseError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
-@app.post("/speak")
-def speak(text: str):
-
-    audio_file = generate_speech(text)
-
-    return FileResponse(
-        audio_file,
-        media_type="audio/mpeg",
-        filename="response.mp3"
-    )
+@app.post("/api/sessions/{session_id}/complete", response_model=CompleteResponse)
+def complete_session(session_id: str) -> CompleteResponse:
+    try:
+        return session_manager.complete(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="Interview session not found.") from exc
+    except AIResponseError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
