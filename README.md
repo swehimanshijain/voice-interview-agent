@@ -1,22 +1,25 @@
 # AI Voice Interview Coach
 
-## System Architecture
+# Working Steps
+Landing Page: Display two interview types: 
+1. HR Interview
+2. Technical Interview (SDE)
 
-```mermaid
-flowchart LR
-  Candidate["Candidate Browser"] --> React["React + Tailwind UI"]
-  React --> Speech["Web Speech API"]
-  React --> TTS["SpeechSynthesis API"]
-  React --> Axios["Axios REST Client"]
-  Axios --> FastAPI["FastAPI Backend"]
-  FastAPI --> Session["Session Manager"]
-  FastAPI --> KB["JSON Knowledge Base"]
-  FastAPI --> Gemini["Gemini 2.5 Flash"]
-  Gemini --> Questions["Dynamic Question Generation"]
-  Gemini --> Evaluation["Structured JSON Evaluation"]
-  Gemini --> Report["Final Scorecard"]
-```
+When a user selects an interview type and clicks Start Interview: 
+1. AI greets the user.
+2. AI asks the first question.
+3. Question is displayed on screen.
+4. Question is spoken aloud using text-to-speech.
+5. User clicks Start Recording.
+6. Live speech transcription appears while speaking.
+7. User clicks Stop Recording.
+8. Answer is automatically submitted.
+9. Evaluation happens immediately.
+10. AI decides whether: Answer is good → next question
+                        Answer is incomplete → follow-up question
+                        User still struggles → coaching hint Repeat until interview completion.
 
+    
 ## Database Design
 
 The project uses `dataset/interview_knowledge_base.json` as JSON database.
